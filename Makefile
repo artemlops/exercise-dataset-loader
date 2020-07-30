@@ -18,4 +18,4 @@ format:
 
 .PHONY: test_unit
 test_unit:
-	pytest -vv --cov giant_exercise --cov-config=setup.cfg --cov-report xml:.coverage-unit.xml tests/unit
+	pytest -vv --cov=giant_exercise --cov-config=setup.cfg --cov-report xml:.coverage-unit.xml tests/unit
