@@ -1,5 +1,4 @@
 import logging
-from contextlib import contextmanager
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -125,14 +124,16 @@ def _parse_ms_id_line(line: str, error_prefix: str) -> Tuple[int, int]:
         if ms < 0:
             raise ValueError
     except ValueError:
-        raise ValueError(f"{e}: 1st element must be positive int, got: {ms_str}")
+        raise ValueError(f"{e}: 1st element must be a positive int, got: {ms_str}")
 
     try:
         id = int(frame_id_str)
         if id < 0:
             raise ValueError
     except ValueError:
-        raise ValueError(f"{e}: 2nd element must be positive int, got: {frame_id_str}")
+        raise ValueError(
+            f"{e}: 2nd element must be a positive int, got: {frame_id_str}"
+        )
 
     return ms, id
 
@@ -167,21 +168,13 @@ def read_observations_meta(meta_file: Path) -> Mapping[int, ObservationMeta]:
     return meta
 
 
-@contextmanager
-def get_rgb_video(path: Path) -> Iterator[Video]:
-    if not path.exists():
-        raise FileNotFoundError(f"file not found: `{path}`")
-    with Video(path) as video:
-        yield video
-
-
 @lru_cache(maxsize=RGB_FRAME_CACHE_SIZE)
 def load_rgb_frame(frame: RgbFrameMeta) -> np.ndarray:
-    # TODO: cover by unit tests
+    # TODO: add tests
     path = frame.video_path
     err = f"Could not load rgb frame file `{path}`"
     try:
-        with get_rgb_video(path) as video:
+        with Video(path) as video:
             return video.seek_read_frame(frame.ms)
     except (ValueError, OSError) as e:
         raise ValueError(f"{err}: {e}") from e
@@ -189,7 +182,7 @@ def load_rgb_frame(frame: RgbFrameMeta) -> np.ndarray:
 
 @lru_cache(maxsize=DEPTH_FRAME_CACHE_SIZE)
 def load_depth_frame(frame: DepthFrameMeta) -> np.ndarray:
-    # TODO: cover by unit tests
+    # TODO: add tests
     path = frame.file_path
     err = f"Could not load depth frame file `{path}`"
     try:
@@ -201,7 +194,7 @@ def load_depth_frame(frame: DepthFrameMeta) -> np.ndarray:
 
 @lru_cache(maxsize=OBSERVATION_FRAME_CACHE_SIZE)
 def load_observation(obs: Optional[ObservationMeta] = None) -> Sequence[int]:
-    # NOTE: tested by 'TestFunctionLoadObservation'
+    # NOTE: tested in 'TestFunctionLoadObservation'
     if obs is None:
         return []
 
@@ -243,7 +236,7 @@ class GiantDataset(IterableDataset):  # type: ignore
         self._step: Optional[int] = None  # step between frames in ms
         if self._linearize:
             first_rgb_frame = next(iter(self._rgb_mapping.values()))
-            with get_rgb_video(first_rgb_frame.video_path) as video:
+            with Video(first_rgb_frame.video_path) as video:
                 fps = video.get_fps()
             self._step = int(1_000 / fps)
 

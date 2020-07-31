@@ -21,6 +21,81 @@ from giant_exercise.dataset_loader import (
 )
 
 
+def test_read_depth_frames_meta_too_many_numbers(tmp_path: Path) -> None:
+    path = tmp_path / "per_frame_timestamps.txt"
+    path.write_text(
+        dedent(
+            """\
+        ; MILLISECOND DEPTH_FRAME_ID
+        000001000 000000
+        000002000 000001 0000002
+        """
+        )
+    )
+    with pytest.raises(ValueError, match="expect 2 elements, got 3"):
+        read_depth_frames_meta(path)
+
+
+def test_read_depth_frames_meta_negative_ms(tmp_path: Path) -> None:
+    path = tmp_path / "per_frame_timestamps.txt"
+    path.write_text(
+        dedent(
+            """\
+        ; MILLISECOND DEPTH_FRAME_ID
+        000001000 000000
+        -000002000 000001
+        """
+        )
+    )
+    with pytest.raises(ValueError, match="1st element must be a positive int"):
+        read_depth_frames_meta(path)
+
+
+def test_read_depth_frames_meta_non_int_ms(tmp_path: Path) -> None:
+    path = tmp_path / "per_frame_timestamps.txt"
+    path.write_text(
+        dedent(
+            """\
+        ; MILLISECOND DEPTH_FRAME_ID
+        000001000 000000
+        abcd 000001
+        """
+        )
+    )
+    with pytest.raises(ValueError, match="1st element must be a positive int"):
+        read_depth_frames_meta(path)
+
+
+def test_read_depth_frames_meta_negative_frame_id(tmp_path: Path) -> None:
+    path = tmp_path / "per_frame_timestamps.txt"
+    path.write_text(
+        dedent(
+            """\
+        ; MILLISECOND DEPTH_FRAME_ID
+        000001000 000000
+        000002000 -000001
+        """
+        )
+    )
+    with pytest.raises(ValueError, match="2nd element must be a positive int"):
+        read_depth_frames_meta(path)
+
+
+def test_read_depth_frames_meta_non_int_frame_id(tmp_path: Path) -> None:
+    path = tmp_path / "per_frame_timestamps.txt"
+    path.write_text(
+        dedent(
+            """\
+        ; MILLISECOND DEPTH_FRAME_ID
+        000001000 000000
+        000002000 abcd
+        """
+        )
+    )
+    with pytest.raises(ValueError, match="2nd element must be a positive int"):
+        read_depth_frames_meta(path)
+
+
 def test_read_depth_frames_meta_ok(tmp_path: Path) -> None:
     path = tmp_path / "per_frame_timestamps.txt"
     path.write_text(

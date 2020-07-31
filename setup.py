@@ -6,7 +6,6 @@ setuptools.setup(
     author="Artem Yushkovskiy",
     author_email="ajuszkowski@ya.ru",
     packages=["giant_exercise"],  # setuptools.find_packages(),
-    # package_dir={'': 'src'},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
