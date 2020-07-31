@@ -16,7 +16,7 @@ pipelines:
           - make init
           - make lint
           - make test_unit
-          - bash <(curl -s https://codecov.io/bash)  # upload coverage
+          - make upload_coverage
 
 definitions:
   caches:

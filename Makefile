@@ -1,4 +1,3 @@
-
 .PHONY: init
 init:
 	python -m pip install -U pip
@@ -10,12 +9,18 @@ lint:
 	flake8 giant_exercise tests setup.py
 	mypy giant_exercise tests setup.py
 
+
 format:
 	isort -rc giant_exercise tests setup.py
 	black giant_exercise tests setup.py
 
 
-
 .PHONY: test_unit
 test_unit:
-	pytest -vv --cov=giant_exercise --cov-config=setup.cfg --cov-report xml:.coverage-unit.xml tests/unit
+	pytest -vv --cov=giant_exercise --cov-config=setup.cfg --cov-report \
+		xml:.coverage-unit.xml tests/unit
+
+
+.PHONY: upload_coverage
+upload_coverage:
+	bash <(curl -s https://codecov.io/bash)

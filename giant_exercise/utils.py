@@ -1,4 +1,4 @@
-from typing import Iterator, Sequence, Tuple, Union
+from typing import Iterator, Optional, Sequence, Tuple, Union
 
 
 def zip_closest(
@@ -6,7 +6,7 @@ def zip_closest(
     secondary: Sequence[int],
     *,
     linearize: bool = False,
-    step: int = 1,
+    step: Optional[int] = None,
 ) -> Iterator[Tuple[int, int]]:
     """
     Iterates over 'main' sequence while taking the closest element
@@ -16,6 +16,9 @@ def zip_closest(
     >>> list(zip_closest(a, b))
     [(1, 1), (2, 1), (7, 6), (8, 9), (9, 9), (15, 10), (20, 10)]
     """
+    if linearize and step is None:
+        raise ValueError("Option 'linearize' requires 'step' defined")
+
     m_iterator = iter(main)
     s_iterator = iter(secondary)
 
@@ -36,7 +39,7 @@ def zip_closest(
         if m_next is None:
             # 'm' is the latest element of 'main'
             break
-        if not linearize or m_prev is None or m >= m_next - step:
+        if not linearize or m_prev is None or step is None or m >= m_next - step:
             # update 'm' from the 'main' sequence
             m = m_next
             m_next = next(m_iterator, None)
