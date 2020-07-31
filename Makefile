@@ -23,4 +23,4 @@ test_unit:
 
 .PHONY: upload_coverage
 upload_coverage:
-	bash <(curl -s https://codecov.io/bash)
+	bash -c 'bash <(curl -s https://codecov.io/bash)'

@@ -6,7 +6,7 @@ def zip_closest(
     secondary: Sequence[int],
     *,
     linearize: bool = False,
-    step: Optional[int] = None,
+    step: Optional[int] = 1,
 ) -> Iterator[Tuple[int, int]]:
     """
     Iterates over 'main' sequence while taking the closest element

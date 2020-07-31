@@ -27,6 +27,13 @@ def test_zip_closest_nonempty_main_empty_secondary(linearize: bool) -> None:
         list(zip_closest(main, secondary, linearize=linearize))
 
 
+def test_zip_closest_linearize_requires_step() -> None:
+    main = (1, 2, 3)
+    secondary = (1, 2, 3)
+    with pytest.raises(ValueError, match="Option 'linearize' requires 'step' defined"):
+        list(zip_closest(main, secondary, linearize=True, step=None))
+
+
 def test_zip_closest_non_linearize_skip_middle_secondaries() -> None:
     main = (1, 2, 7)
     secondary = (1, 5, 6)
