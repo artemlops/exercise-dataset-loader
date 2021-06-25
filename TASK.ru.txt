@@ -1,0 +1,26 @@
+Пусть набор данных хранится следующим образом:
+
+my_dataset/
+  rgb/
+    video.mp4
+    per_frame_timestamps.txt  # format: timestamp_in_ms_0
+                              #         timestamp_in_ms_1
+                              #         ...
+  depth/
+    frame-000000.png
+    frame-000001.png
+    …
+    per_frame_timestamps.txt
+  touch/
+    observation-000000.txt  # format: v_0 v_1 … v_{N-1}
+    observation-000001.txt
+    …
+    per_observation_timestamps.txt
+
+Количество кадров/сэмплов в папках rgb/depth/touch может быть разным. Частота записи также может отличаться.
+
+Содержимое observation-X.txt -- это просто набор чисел через пробел.
+
+Необходимо реализовать следующий функционал:
+Итератор (touch_timestamp_i, touch_i, rgb_j, depth_k) для прохода по датасету. Rgb_j и depth_k максимально близки во времени к touch_i.
+Альтернативный итератор, который возвращает то же самое, но повторяет, по возможности, задержки во времени из файла touch/per_observation_timestamps.txt.
