@@ -7,10 +7,10 @@ import pytest
 from torch import tensor
 from torch.utils.data import DataLoader
 
-from giant_exercise.dataset_loader import (
+from dataset_loader.dataset_loader import (
     VIDEO_FILE_NAME,
     DepthFrameMeta,
-    GiantDataset,
+    MyDataset,
     ObservationMeta,
     RgbFrameMeta,
     Video,
@@ -308,9 +308,9 @@ class TestFunctionLoadObservation:
         assert load_observation(obs) == [1, 2, 3, 4, 5]
 
 
-class TestGiantDataset:
+class TestMyDataset:
     def test_non_linearize_check_timestamps(self, dataset_path: Path) -> None:
-        ds = GiantDataset(dataset_path)
+        ds = MyDataset(dataset_path)
         assert ds.step is None
 
         data = list(DataLoader(ds))
@@ -332,7 +332,7 @@ class TestGiantDataset:
         ]
 
     def test_linearize_check_timestamps(self, dataset_path: Path) -> None:
-        ds = GiantDataset(dataset_path, linearize=True)
+        ds = MyDataset(dataset_path, linearize=True)
         assert ds.step == 33, "computed from the video's FPS"
 
         data = list(DataLoader(ds))

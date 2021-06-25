@@ -2,10 +2,10 @@ import setuptools
 
 
 setuptools.setup(
-    name="giant-exercise",
+    name="dataset-loader",
     author="Artem Yushkovskiy",
     author_email="ajuszkowski@ya.ru",
-    packages=["giant_exercise"],  # setuptools.find_packages(),
+    packages=["dataset_loader"],  # setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",

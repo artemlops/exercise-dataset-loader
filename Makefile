@@ -5,19 +5,19 @@ init:
 
 
 lint:
-	black --check giant_exercise tests setup.py
-	flake8 giant_exercise tests setup.py
-	mypy giant_exercise tests setup.py
+	black --check dataset_loader tests setup.py
+	flake8 dataset_loader tests setup.py
+	mypy dataset_loader tests setup.py
 
 
 format:
-	isort -rc giant_exercise tests setup.py
-	black giant_exercise tests setup.py
+	isort -rc dataset_loader tests setup.py
+	black dataset_loader tests setup.py
 
 
 .PHONY: test_unit
 test_unit:
-	pytest -vv --cov=giant_exercise --cov-config=setup.cfg --cov-report \
+	pytest -vv --cov=dataset_loader --cov-config=setup.cfg --cov-report \
 		xml:.coverage-unit.xml tests/unit
 
 

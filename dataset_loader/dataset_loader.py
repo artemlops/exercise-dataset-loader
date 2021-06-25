@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image
 from torch.utils.data.dataset import IterableDataset
 
-from giant_exercise.utils import zip_closest
+from dataset_loader.utils import zip_closest
 
 
 logger = logging.getLogger(__name__)
@@ -225,7 +225,7 @@ class DataItem(NamedTuple):
     depth_timestamp_k: int
 
 
-class GiantDataset(IterableDataset):  # type: ignore
+class MyDataset(IterableDataset):  # type: ignore
     def __init__(self, root: Union[str, Path], linearize: bool = False):
         super().__init__()
         self._rgb_mapping = read_rgb_frames_meta(root / RGB_META_REL_PATH)

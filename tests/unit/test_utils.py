@@ -1,6 +1,6 @@
 import pytest
 
-from giant_exercise.utils import zip_closest
+from dataset_loader.utils import zip_closest
 
 
 @pytest.mark.parametrize("linearize", [True, False])
